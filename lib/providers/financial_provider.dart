@@ -32,5 +32,31 @@ class FinancialProvider extends ChangeNotifier {
     return _entries.fold(0, (sum, entry) => 
       sum + (entry.type == 'income' ? entry.amount : -entry.amount));
   }
+
+  double getAccountBalance() {
+    return _entries.where((entry) => entry.category == 'conta').fold(0, (sum, entry) => 
+      sum + (entry.type == 'income' ? entry.amount : -entry.amount));
+  }
+
+  double getSavingsBalance() {
+    return _entries.where((entry) => entry.category == 'poupanca').fold(0, (sum, entry) => 
+      sum + (entry.type == 'income' ? entry.amount : -entry.amount));
+  }
+
+  double getReceivablesBalance() {
+    return _entries.where((entry) => entry.type == 'income' && entry.category == 'a receber').fold(0, (sum, entry) => sum + entry.amount);
+  }
+
+  List<Map<String, dynamic>> getExpensesByCategory() {
+    final expenseCategories = _entries.where((entry) => entry.type == 'expense').map((e) => e.category).toSet();
+    return expenseCategories.map((category) {
+      final amount = _entries.where((entry) => entry.type == 'expense' && entry.category == category).fold(0.0, (sum, entry) => sum + entry.amount);
+      return {'category': category, 'amount': amount};
+    }).toList()..sort((a, b) => (b['amount'] as double).compareTo(a['amount'] as double));
+  }
+
+  List<FinancialEntry> getRecentTransactions(int count) {
+    return _entries.take(count).toList();
+  }
 }
 
