@@ -1,4 +1,4 @@
-import 'package:uuid/uuid.dart';
+import '../utils/id_generator.dart';
 
 class FinancialEntry {
   final String id;
@@ -15,7 +15,7 @@ class FinancialEntry {
     required this.date,
     required this.category,
     required this.type,
-  }) : id = id ?? const Uuid().v4();
+  }) : id = id ?? generateUniqueId();
 
   Map<String, dynamic> toMap() {
     return {
