@@ -26,6 +26,7 @@ class CaixinhaApp extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Orçamento Pessoal',
           theme: ThemeData(
             primarySwatch: themeProvider.primaryColor,
