@@ -14,7 +14,7 @@ class DashboardContent extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: const Text('Controle Financeiro Pessoal'),
         backgroundColor: themeProvider.primaryColor,
       ),
       body: SingleChildScrollView(

@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             destinations: const [
               NavigationRailDestination(
                 icon: Icon(Icons.dashboard),
-                label: Text('Dashboard'),
+                label: Text('Menu'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.account_balance_wallet),
