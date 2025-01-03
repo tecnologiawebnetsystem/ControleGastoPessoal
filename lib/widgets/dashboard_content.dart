@@ -28,7 +28,7 @@ class DashboardContent extends StatelessWidget {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: themeProvider.textColor),
               ),
               const SizedBox(height: 16),
-              _buildSummaryCard(context, financialProvider),
+              _buildSummaryCards(context, financialProvider),
               const SizedBox(height: 24),
               Text(
                 'Gráfico de Despesas',
@@ -50,28 +50,44 @@ class DashboardContent extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryCard(BuildContext context, FinancialProvider financialProvider) {
+  Widget _buildSummaryCards(BuildContext context, FinancialProvider financialProvider) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final totalBalance = financialProvider.getTotalBalance();
+    final accountBalance = financialProvider.getAccountBalance();
+    final savingsBalance = financialProvider.getSavingsBalance();
+    final receivablesBalance = financialProvider.getReceivablesBalance();
 
+    return Column(
+      children: [
+        _buildSummaryCard(context, 'Saldo Total', totalBalance, themeProvider),
+        const SizedBox(height: 8),
+        _buildSummaryCard(context, 'Saldo em Conta', accountBalance, themeProvider),
+        const SizedBox(height: 8),
+        _buildSummaryCard(context, 'Saldo em Poupança', savingsBalance, themeProvider),
+        const SizedBox(height: 8),
+        _buildSummaryCard(context, 'Contas a Receber', receivablesBalance, themeProvider),
+      ],
+    );
+  }
+
+  Widget _buildSummaryCard(BuildContext context, String title, double amount, ThemeProvider themeProvider) {
     return Card(
       elevation: 4,
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Saldo Total',
-              style: TextStyle(fontSize: 18, color: themeProvider.textColor),
+              title,
+              style: TextStyle(fontSize: 16, color: themeProvider.textColor),
             ),
-            const SizedBox(height: 8),
             Text(
-              'R\$ ${totalBalance.toStringAsFixed(2)}',
+              'R\$ ${amount.toStringAsFixed(2)}',
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: totalBalance >= 0 ? Colors.green : Colors.red,
+                color: amount >= 0 ? Colors.green : Colors.red,
               ),
             ),
           ],
@@ -81,37 +97,64 @@ class DashboardContent extends StatelessWidget {
   }
 
   Widget _buildExpensesChart(BuildContext context, FinancialProvider financialProvider) {
-    // Implemente o gráfico de despesas aqui usando fl_chart
+    final expenses = financialProvider.getExpensesByCategory();
+    final maxY = expenses.isNotEmpty ? expenses.map((e) => e['amount'] as double).reduce((a, b) => a > b ? a : b) : 0.0;
+
     return Container(
-      height: 200,
-      child: PieChart(
-        PieChartData(
-          sections: [
-            PieChartSectionData(
-              color: Colors.red,
-              value: 30,
-              title: 'Moradia',
-              radius: 50,
+      height: 300,
+      child: BarChart(
+        BarChartData(
+          alignment: BarChartAlignment.spaceAround,
+          maxY: maxY,
+          barTouchData: BarTouchData(enabled: false),
+          titlesData: FlTitlesData(
+            show: true,
+            bottomTitles: AxisTitles(
+              sideTitles: SideTitles(
+                showTitles: true,
+                getTitlesWidget: (double value, TitleMeta meta) {
+                  int index = value.toInt();
+                  return index < expenses.length
+                      ? Text(
+                          expenses[index]['category'] as String,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        )
+                      : const Text('');
+                },
+                reservedSize: 38,
+              ),
             ),
-            PieChartSectionData(
-              color: Colors.blue,
-              value: 20,
-              title: 'Alimentação',
-              radius: 50,
+            leftTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
             ),
-            PieChartSectionData(
-              color: Colors.green,
-              value: 15,
-              title: 'Transporte',
-              radius: 50,
+            topTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
             ),
-            PieChartSectionData(
-              color: Colors.yellow,
-              value: 35,
-              title: 'Outros',
-              radius: 50,
+            rightTitles: AxisTitles(
+              sideTitles: SideTitles(showTitles: false),
             ),
-          ],
+          ),
+          borderData: FlBorderData(show: false),
+          barGroups: List.generate(expenses.length, (index) {
+            return BarChartGroupData(
+              x: index,
+              barRods: [
+                BarChartRodData(
+                  toY: expenses[index]['amount'] as double,
+                  color: Colors.blue,
+                  width: 22,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(6),
+                    topRight: Radius.circular(6),
+                  ),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );
@@ -119,11 +162,11 @@ class DashboardContent extends StatelessWidget {
 
   Widget _buildRecentTransactions(BuildContext context, FinancialProvider financialProvider) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-    final recentTransactions = financialProvider.entries.take(5).toList();
+    final recentTransactions = financialProvider.getRecentTransactions(5);
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: recentTransactions.length,
       itemBuilder: (context, index) {
         final transaction = recentTransactions[index];
