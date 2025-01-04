@@ -375,6 +375,7 @@ file:///C:/repos/ControleGastoPessoal/lib/main.dart
 file:///C:/repos/ControleGastoPessoal/lib/models/financial_entry.dart
 file:///C:/repos/ControleGastoPessoal/lib/providers/financial_provider.dart
 file:///C:/repos/ControleGastoPessoal/lib/providers/theme_provider.dart
+file:///C:/repos/ControleGastoPessoal/lib/screens/cadastro_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/screens/carteira_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/screens/configuracoes_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/screens/contas_a_pagar_screen.dart
@@ -382,8 +383,11 @@ file:///C:/repos/ControleGastoPessoal/lib/screens/contas_a_receber_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/screens/financial_entry_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/screens/home_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/screens/lancamentos_futuros_screen.dart
+file:///C:/repos/ControleGastoPessoal/lib/screens/login_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/screens/poupanca_screen.dart
+file:///C:/repos/ControleGastoPessoal/lib/screens/recuperar_senha_screen.dart
 file:///C:/repos/ControleGastoPessoal/lib/utils/id_generator.dart
+file:///C:/repos/ControleGastoPessoal/lib/widgets/custom_text_field.dart
 file:///C:/repos/ControleGastoPessoal/lib/widgets/dashboard_content.dart
 file:///C:/src/flutter/bin/cache/flutter_web_sdk/kernel/dart2js_platform.dill
 file:///C:/src/flutter/packages/flutter/lib/animation.dart
