@@ -8,6 +8,7 @@ class ThemeProvider extends ChangeNotifier {
   Color _menuColor = Colors.white;
   Color _graphPrimaryColor = Colors.blue;
   Color _graphSecondaryColor = Colors.red;
+  bool _isDarkMode = false;
 
   static const String _primaryColorKey = 'primary_color';
   static const String _textColorKey = 'text_color';
@@ -15,6 +16,8 @@ class ThemeProvider extends ChangeNotifier {
   static const String _menuColorKey = 'menu_color';
   static const String _graphPrimaryColorKey = 'graph_primary_color';
   static const String _graphSecondaryColorKey = 'graph_secondary_color';
+  static const String _isDarkModeKey = 'is_dark_mode';
+
 
   ThemeProvider() {
     _loadSavedColors();
@@ -26,6 +29,8 @@ class ThemeProvider extends ChangeNotifier {
   Color get menuColor => _menuColor;
   Color get graphPrimaryColor => _graphPrimaryColor;
   Color get graphSecondaryColor => _graphSecondaryColor;
+  bool get isDarkMode => _isDarkMode;
+  Color get backgroundColor => _isDarkMode ? Colors.grey[900]! : Colors.white;
 
   MaterialColor _createMaterialColor(Color color) {
     List<double> strengths = <double>[.05];
@@ -54,6 +59,7 @@ class ThemeProvider extends ChangeNotifier {
     Color? menuColor,
     Color? graphPrimaryColor,
     Color? graphSecondaryColor,
+    bool? isDarkMode,
   }) {
     if (primaryColor != null) _primaryColor = primaryColor;
     if (textColor != null) _textColor = textColor;
@@ -61,6 +67,7 @@ class ThemeProvider extends ChangeNotifier {
     if (menuColor != null) _menuColor = menuColor;
     if (graphPrimaryColor != null) _graphPrimaryColor = graphPrimaryColor;
     if (graphSecondaryColor != null) _graphSecondaryColor = graphSecondaryColor;
+    if (isDarkMode != null) _isDarkMode = isDarkMode;
 
     notifyListeners();
     _saveColors();
@@ -82,6 +89,7 @@ class ThemeProvider extends ChangeNotifier {
       _menuColor = Color(prefs.getInt(_menuColorKey) ?? Colors.white.value);
       _graphPrimaryColor = Color(prefs.getInt(_graphPrimaryColorKey) ?? Colors.blue.value);
       _graphSecondaryColor = Color(prefs.getInt(_graphSecondaryColorKey) ?? Colors.red.value);
+      _isDarkMode = prefs.getBool(_isDarkModeKey) ?? false;
 
       notifyListeners();
     } catch (e) {
@@ -93,6 +101,7 @@ class ThemeProvider extends ChangeNotifier {
       _menuColor = Colors.white;
       _graphPrimaryColor = Colors.blue;
       _graphSecondaryColor = Colors.red;
+      _isDarkMode = false;
     }
   }
 
@@ -105,8 +114,16 @@ class ThemeProvider extends ChangeNotifier {
       await prefs.setInt(_menuColorKey, _menuColor.value);
       await prefs.setInt(_graphPrimaryColorKey, _graphPrimaryColor.value);
       await prefs.setInt(_graphSecondaryColorKey, _graphSecondaryColor.value);
+      await prefs.setBool(_isDarkModeKey, _isDarkMode);
     } catch (e) {
       debugPrint('Error saving colors: $e');
     }
   }
+
+  void toggleTheme() {
+    _isDarkMode = !_isDarkMode;
+    notifyListeners();
+    _saveColors();
+  }
 }
+

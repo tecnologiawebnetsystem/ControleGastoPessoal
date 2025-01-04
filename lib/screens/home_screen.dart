@@ -8,6 +8,7 @@ import 'lancamentos_futuros_screen.dart';
 import 'contas_a_pagar_screen.dart';
 import 'contas_a_receber_screen.dart';
 import 'configuracoes_screen.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             destinations: const [
               NavigationRailDestination(
                 icon: Icon(Icons.dashboard),
-                label: Text('Menu'),
+                label: Text('Dashboard'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.account_balance_wallet),
@@ -83,7 +84,29 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           Expanded(
-            child: _widgetOptions.elementAt(_selectedIndex),
+            child: Column(
+              children: [
+                Expanded(
+                  child: _widgetOptions.elementAt(_selectedIndex),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    icon: Icon(Icons.exit_to_app),
+                    label: Text('Sair'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: themeProvider.primaryColor,
+                      foregroundColor: themeProvider.menuColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

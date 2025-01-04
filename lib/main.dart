@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/login_screen.dart';
 import 'providers/theme_provider.dart';
 import 'providers/financial_provider.dart';
 
@@ -26,11 +26,10 @@ class CaixinhaApp extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (context, themeProvider, child) {
         return MaterialApp(
-          debugShowCheckedModeBanner: false,
           title: 'Orçamento Pessoal',
           theme: ThemeData(
             primarySwatch: themeProvider.primaryColor,
-            scaffoldBackgroundColor: Colors.white,
+            scaffoldBackgroundColor: themeProvider.backgroundColor,
             appBarTheme: AppBarTheme(
               backgroundColor: themeProvider.primaryColor,
               elevation: 0,
@@ -48,7 +47,7 @@ class CaixinhaApp extends StatelessWidget {
             iconTheme: IconThemeData(color: themeProvider.iconColor),
             visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
-          home: const HomeScreen(),
+          home: const LoginScreen(),
         );
       },
     );
