@@ -27,6 +27,7 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
     final financialProvider = Provider.of<FinancialProvider>(context);
 
     return Scaffold(
+      backgroundColor: themeProvider.backgroundColor,
       appBar: AppBar(
         title: Text(widget.title),
         backgroundColor: themeProvider.primaryColor,
@@ -39,13 +40,20 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
               itemBuilder: (context, index) {
                 final entry = financialProvider.getEntriesByType(widget.type)[index];
                 return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  color: themeProvider.cardColor,
                   child: ListTile(
                     title: Text(
                       entry.description,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: themeProvider.textColor,
+                      ),
                     ),
-                    subtitle: Text('${entry.category} - ${entry.date.toString().split(' ')[0]}'),
+                    subtitle: Text(
+                      '${entry.category} - ${entry.date.toString().split(' ')[0]}',
+                      style: TextStyle(color: themeProvider.textSecondaryColor),
+                    ),
                     trailing: Text(
                       'R\$ ${entry.amount.toStringAsFixed(2)}',
                       style: TextStyle(
@@ -68,7 +76,7 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: themeProvider.primaryColor,
                 foregroundColor: themeProvider.menuColor,
-                minimumSize: Size(double.infinity, 50),
+                minimumSize: const Size(double.infinity, 50),
               ),
             ),
           ),
@@ -83,7 +91,11 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(entry == null ? 'Adicionar ${widget.title}' : 'Editar ${widget.title}'),
+          backgroundColor: themeProvider.cardColor,
+          title: Text(
+            entry == null ? 'Adicionar ${widget.title}' : 'Editar ${widget.title}',
+            style: TextStyle(color: themeProvider.textColor),
+          ),
           content: SingleChildScrollView(
             child: Form(
               key: _formKey,
@@ -94,34 +106,50 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
                     initialValue: entry?.description,
                     decoration: InputDecoration(
                       labelText: 'Descrição',
-                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: themeProvider.textSecondaryColor),
+                      border: const OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: themeProvider.textSecondaryColor),
+                      ),
                     ),
+                    style: TextStyle(color: themeProvider.textColor),
                     validator: (value) => value!.isEmpty ? 'Campo obrigatório' : null,
                     onSaved: (value) => _description = value!,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextFormField(
                     initialValue: entry?.amount.toString(),
                     decoration: InputDecoration(
                       labelText: 'Valor',
-                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: themeProvider.textSecondaryColor),
+                      border: const OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: themeProvider.textSecondaryColor),
+                      ),
                       prefixText: 'R\$ ',
+                      prefixStyle: TextStyle(color: themeProvider.textColor),
                     ),
-                    keyboardType: TextInputType.numberWithOptions(decimal: true),
+                    style: TextStyle(color: themeProvider.textColor),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     validator: (value) => value!.isEmpty ? 'Campo obrigatório' : null,
                     onSaved: (value) => _amount = double.parse(value!),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextFormField(
                     initialValue: entry?.category,
                     decoration: InputDecoration(
                       labelText: 'Categoria',
-                      border: OutlineInputBorder(),
+                      labelStyle: TextStyle(color: themeProvider.textSecondaryColor),
+                      border: const OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: themeProvider.textSecondaryColor),
+                      ),
                     ),
+                    style: TextStyle(color: themeProvider.textColor),
                     validator: (value) => value!.isEmpty ? 'Campo obrigatório' : null,
                     onSaved: (value) => _category = value!,
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   InkWell(
                     onTap: () async {
                       final selectedDate = await showDatePicker(
@@ -129,6 +157,19 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
                         initialDate: entry?.date ?? DateTime.now(),
                         firstDate: DateTime(2000),
                         lastDate: DateTime(2100),
+                        builder: (context, child) {
+                          return Theme(
+                            data: Theme.of(context).copyWith(
+                              colorScheme: ColorScheme.dark(
+                                primary: themeProvider.primaryColor,
+                                onPrimary: themeProvider.menuColor,
+                                surface: themeProvider.cardColor,
+                                onSurface: themeProvider.textColor,
+                              ),
+                            ),
+                            child: child!,
+                          );
+                        },
                       );
                       if (selectedDate != null) {
                         setState(() {
@@ -139,15 +180,20 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
                     child: InputDecorator(
                       decoration: InputDecoration(
                         labelText: 'Data',
-                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(color: themeProvider.textSecondaryColor),
+                        border: const OutlineInputBorder(),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: themeProvider.textSecondaryColor),
+                        ),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             entry?.date.toString().split(' ')[0] ?? _date.toString().split(' ')[0],
+                            style: TextStyle(color: themeProvider.textColor),
                           ),
-                          Icon(Icons.calendar_today),
+                          Icon(Icons.calendar_today, color: themeProvider.iconColor),
                         ],
                       ),
                     ),
@@ -158,7 +204,7 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancelar'),
+              child: Text('Cancelar', style: TextStyle(color: themeProvider.primaryColor)),
               onPressed: () => Navigator.pop(context),
             ),
             ElevatedButton(

@@ -49,7 +49,7 @@ class LoginScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Caixinha ERP',
+                            'Controle Gasto Pessoal',
                             style: TextStyle(
                               fontSize: 36,
                               fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(width: 64),
                       Expanded(
                         child: Image.asset(
-                          'lib/images/finance_illustration.png',
+                          'lib/images/finance_illustration.jpg',
                           height: 200,
                         ),
                       ),

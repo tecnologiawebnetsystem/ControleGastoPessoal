@@ -48,11 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
             selectedIndex: _selectedIndex,
             onDestinationSelected: _onItemSelected,
             extended: MediaQuery.of(context).size.width > 1200,
-            backgroundColor: themeProvider.cardColor,
-            selectedIconTheme: IconThemeData(color: themeProvider.primaryColor),
-            unselectedIconTheme: IconThemeData(color: themeProvider.iconColor),
-            selectedLabelTextStyle: TextStyle(color: themeProvider.primaryColor),
-            unselectedLabelTextStyle: TextStyle(color: themeProvider.textColor),
+            backgroundColor: themeProvider.primaryColor,
+            selectedLabelTextStyle: TextStyle(color: themeProvider.menuColor),
+            unselectedLabelTextStyle: TextStyle(color: themeProvider.menuColor.withOpacity(0.7)),
+            selectedIconTheme: IconThemeData(color: themeProvider.menuColor),
+            unselectedIconTheme: IconThemeData(color: themeProvider.menuColor),
             destinations: const [
               NavigationRailDestination(
                 icon: Icon(Icons.dashboard),
@@ -91,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   backgroundColor: themeProvider.cardColor,
                   elevation: 0,
                   title: Text(
-                    'Caixinha ERP',
+                    'Controle Gasto Pessoal',
                     style: TextStyle(color: themeProvider.textColor),
                   ),
                   actions: [

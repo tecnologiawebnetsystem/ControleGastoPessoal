@@ -1,2 +1,5 @@
-2025/01/03-22:28:14.037 a2c Creating DB C:\Users\klebe\AppData\Local\Temp\flutter_tools.2c8de212\flutter_tools_chrome_device.8dd169fe\Default\Session Storage since it was missing.
-2025/01/03-22:28:14.078 a2c Reusing MANIFEST C:\Users\klebe\AppData\Local\Temp\flutter_tools.2c8de212\flutter_tools_chrome_device.8dd169fe\Default\Session Storage/MANIFEST-000001
+2025/01/04-22:54:12.971 65c4 Reusing MANIFEST C:\Users\klebe\AppData\Local\Temp\flutter_tools.9f404a7e\flutter_tools_chrome_device.187b136c\Default\Session Storage/MANIFEST-000001
+2025/01/04-22:54:12.979 65c4 Recovering log #10
+2025/01/04-22:54:12.984 65c4 Reusing old log C:\Users\klebe\AppData\Local\Temp\flutter_tools.9f404a7e\flutter_tools_chrome_device.187b136c\Default\Session Storage/000010.log 
+2025/01/04-22:54:12.984 65c4 Delete type=0 #3
+2025/01/04-22:54:12.985 65c4 Delete type=0 #8
