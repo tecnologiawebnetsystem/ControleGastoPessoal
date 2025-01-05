@@ -58,5 +58,17 @@ class FinancialProvider extends ChangeNotifier {
   List<FinancialEntry> getRecentTransactions(int count) {
     return _entries.take(count).toList();
   }
+
+  double getTotalIncome() {
+    return _entries.where((entry) => entry.type == 'income').fold(0, (sum, entry) => sum + entry.amount);
+  }
+
+  double getTotalExpenses() {
+    return _entries.where((entry) => entry.type == 'expense').fold(0, (sum, entry) => sum + entry.amount);
+  }
+
+  double getTotalSavings() {
+    return getTotalIncome() - getTotalExpenses();
+  }
 }
 

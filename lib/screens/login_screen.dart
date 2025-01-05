@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
+import 'home_screen.dart';
 import 'cadastro_screen.dart';
 import 'recuperar_senha_screen.dart';
-import 'home_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,122 +15,144 @@ class LoginScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: themeProvider.backgroundColor,
-      body: Row(
-        children: [
-          // Coluna da esquerda com a imagem (reduzida em 15%)
-          Expanded(
-            flex: 85, // 100 - 15 = 85
-            child: Image.asset(
-              'lib/images/fundo_login.png',
-              fit: BoxFit.cover,
-              height: double.infinity,
+      body: Center(
+        child: SingleChildScrollView(
+          child: Container(
+            width: size.width > 1200 ? 1000 : size.width * 0.9,
+            padding: const EdgeInsets.all(32),
+            decoration: BoxDecoration(
+              color: themeProvider.cardColor,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
-          ),
-          // Coluna da direita com o formulário de login
-          Expanded(
-            flex: 115, // Aumentado para compensar a redução da imagem
-            child: Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(32.0),
-                  child: Card(
-                    elevation: 8,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(32.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Expanded(
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Login',
+                            'Bem-vindo ao',
                             style: TextStyle(
                               fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w300,
                               color: themeProvider.textColor,
                             ),
-                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 32),
-                          TextField(
-                            decoration: InputDecoration(
-                              labelText: 'Email',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.email),
+                          Text(
+                            'Caixinha ERP',
+                            style: TextStyle(
+                              fontSize: 36,
+                              fontWeight: FontWeight.bold,
+                              color: themeProvider.primaryColor,
                             ),
                           ),
                           const SizedBox(height: 16),
-                          TextField(
-                            obscureText: true,
-                            decoration: InputDecoration(
-                              labelText: 'Senha',
-                              border: OutlineInputBorder(),
-                              prefixIcon: Icon(Icons.lock),
+                          Text(
+                            'Gerencie suas finanças com eficiência e precisão.',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: themeProvider.textColor.withOpacity(0.7),
                             ),
-                          ),
-                          const SizedBox(height: 24),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(builder: (context) => const HomeScreen()),
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: themeProvider.primaryColor,
-                              foregroundColor: Colors.white,
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text('Entrar', style: TextStyle(fontSize: 16)),
-                          ),
-                          const SizedBox(height: 16),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => const RecuperarSenhaScreen()),
-                              );
-                            },
-                            child: Text(
-                              'Esqueceu a senha?',
-                              style: TextStyle(color: themeProvider.primaryColor),
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Não tem uma conta?',
-                                style: TextStyle(color: themeProvider.textColor),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => const CadastroScreen()),
-                                  );
-                                },
-                                child: Text(
-                                  'Cadastre-se',
-                                  style: TextStyle(color: themeProvider.primaryColor),
-                                ),
-                              ),
-                            ],
                           ),
                         ],
                       ),
                     ),
+                    if (size.width > 600) ...[
+                      const SizedBox(width: 64),
+                      Expanded(
+                        child: Image.asset(
+                          'lib/images/finance_illustration.png',
+                          height: 200,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+                const SizedBox(height: 48),
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email, color: themeProvider.iconColor),
+                    labelStyle: TextStyle(color: themeProvider.textSecondaryColor),
+                  ),
+                  style: TextStyle(color: themeProvider.textColor),
+                ),
+                const SizedBox(height: 16),
+                TextField(
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Senha',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.lock, color: themeProvider.iconColor),
+                    labelStyle: TextStyle(color: themeProvider.textSecondaryColor),
+                  ),
+                  style: TextStyle(color: themeProvider.textColor),
+                ),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const HomeScreen()),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: themeProvider.primaryColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text('Entrar', style: TextStyle(fontSize: 18)),
                   ),
                 ),
-              ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RecuperarSenhaScreen()),
+                        );
+                      },
+                      child: Text(
+                        'Esqueceu a senha?',
+                        style: TextStyle(color: themeProvider.primaryColor),
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const CadastroScreen()),
+                        );
+                      },
+                      child: Text(
+                        'Criar uma conta',
+                        style: TextStyle(color: themeProvider.primaryColor),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }
