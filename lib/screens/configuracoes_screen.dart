@@ -12,176 +12,78 @@ class ConfiguracoesScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Configurações'),
+            backgroundColor: themeProvider.primaryColor,
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Personalização',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 24),
-                  _buildColorSection(context, 'Cor Principal', themeProvider.primaryColor, (color) {
-                    themeProvider.updateColors(primaryColor: color as MaterialColor);
-                  }),
-                  _buildColorSection(context, 'Cor do Texto', themeProvider.textColor, (color) {
-                    themeProvider.updateColors(textColor: color);
-                  }),
-                  _buildColorSection(context, 'Cor dos Ícones', themeProvider.iconColor, (color) {
-                    themeProvider.updateColors(iconColor: color);
-                  }),
-                  _buildColorSection(context, 'Cor do Menu', themeProvider.menuColor, (color) {
-                    themeProvider.updateColors(menuColor: color);
-                  }),
-                  _buildColorSection(context, 'Cor Primária do Gráfico', themeProvider.graphPrimaryColor, (color) {
-                    themeProvider.updateColors(graphPrimaryColor: color);
-                  }),
-                  _buildColorSection(context, 'Cor Secundária do Gráfico', themeProvider.graphSecondaryColor, (color) {
-                    themeProvider.updateColors(graphSecondaryColor: color);
-                  }),
-                  const SizedBox(height: 32),
-                  _buildPreview(context, themeProvider),
+          body: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              _buildSection(
+                context,
+                'Aparência',
+                [
+                  _buildThemeToggle(context, themeProvider),
                 ],
               ),
-            ),
+              const SizedBox(height: 24),
+              _buildSection(
+                context,
+                'Informações do Aplicativo',
+                [
+                  _buildInfoTile('Versão', '1.0.0'),
+                  _buildInfoTile('Desenvolvido por', 'Sua Empresa'),
+                ],
+              ),
+            ],
           ),
         );
       },
     );
   }
 
-  Widget _buildColorSection(BuildContext context, String title, Color currentColor, Function(Color?) onColorChanged) {
+  Widget _buildSection(BuildContext context, String title, List<Widget> children) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           title,
-          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            ...Colors.primaries.map((color) => _buildColorOption(context, color, currentColor, onColorChanged)),
-            _buildColorOption(context, Colors.black, currentColor, onColorChanged),
-            _buildColorOption(context, Colors.white, currentColor, onColorChanged),
-          ],
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: themeProvider.textColor,
+          ),
         ),
         const SizedBox(height: 16),
+        ...children,
       ],
     );
   }
 
-  Widget _buildColorOption(BuildContext context, Color color, Color currentColor, Function(Color?) onColorChanged) {
-    final isSelected = color.value == currentColor.value;
-    return GestureDetector(
-      onTap: () => onColorChanged(color),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-          border: Border.all(
-            color: isSelected ? Colors.black : Colors.grey.shade300,
-            width: isSelected ? 2 : 1,
-          ),
-          boxShadow: isSelected
-              ? [BoxShadow(color: color.withOpacity(0.4), blurRadius: 4, spreadRadius: 1)]
-              : null,
-        ),
-        child: isSelected
-            ? const Icon(Icons.check, color: Colors.white, size: 24)
-            : null,
+  Widget _buildThemeToggle(BuildContext context, ThemeProvider themeProvider) {
+    return SwitchListTile(
+      title: Text(
+        'Modo Escuro',
+        style: TextStyle(color: themeProvider.textColor),
+      ),
+      value: themeProvider.isDarkMode,
+      onChanged: (value) {
+        themeProvider.toggleTheme();
+      },
+      secondary: Icon(
+        themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+        color: themeProvider.primaryColor,
       ),
     );
   }
 
-  Widget _buildPreview(BuildContext context, ThemeProvider themeProvider) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          'Prévia',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 16),
-        Card(
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Icon(Icons.palette, color: themeProvider.iconColor),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Elementos principais',
-                      style: TextStyle(
-                        color: themeProvider.textColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Container(
-                  width: double.infinity,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: themeProvider.primaryColor,
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Barra de navegação',
-                    style: TextStyle(color: themeProvider.menuColor),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: themeProvider.graphPrimaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Gráfico - Cor Primária',
-                          style: TextStyle(color: themeProvider.menuColor),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: themeProvider.graphSecondaryColor,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Gráfico - Cor Secundária',
-                          style: TextStyle(color: themeProvider.menuColor),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
+  Widget _buildInfoTile(String title, String value) {
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return ListTile(
+          title: Text(title, style: TextStyle(color: themeProvider.textColor)),
+          trailing: Text(value, style: TextStyle(color: themeProvider.textSecondaryColor)),
+        );
+      },
     );
   }
 }

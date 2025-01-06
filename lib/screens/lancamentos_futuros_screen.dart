@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 import 'financial_entry_screen.dart';
 
 class LancamentosFuturosScreen extends StatelessWidget {
@@ -6,7 +8,16 @@ class LancamentosFuturosScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const FinancialEntryScreen(title: 'Lançamentos Futuros', type: 'futuro');
+    final themeProvider = Provider.of<ThemeProvider>(context);
+    return Theme(
+      data: Theme.of(context).copyWith(
+        textTheme: Theme.of(context).textTheme.apply(
+          bodyColor: themeProvider.textColor,
+          displayColor: themeProvider.textColor,
+        ),
+      ),
+      child: const FinancialEntryScreen(title: 'Lançamentos Futuros', type: 'futuro'),
+    );
   }
 }
 

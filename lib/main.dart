@@ -28,24 +28,23 @@ class CaixinhaApp extends StatelessWidget {
         return MaterialApp(
           title: 'Orçamento Pessoal',
           theme: ThemeData(
-            primarySwatch: themeProvider.primaryColor,
+            primaryColor: themeProvider.primaryColor,
             scaffoldBackgroundColor: themeProvider.backgroundColor,
-            appBarTheme: AppBarTheme(
-              backgroundColor: themeProvider.primaryColor,
-              elevation: 0,
-              iconTheme: IconThemeData(color: themeProvider.menuColor),
-              titleTextStyle: TextStyle(
-                color: themeProvider.menuColor,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            cardColor: themeProvider.cardColor,
             textTheme: Theme.of(context).textTheme.apply(
               bodyColor: themeProvider.textColor,
               displayColor: themeProvider.textColor,
             ),
+            colorScheme: ColorScheme.fromSwatch().copyWith(
+              primary: themeProvider.primaryColor,
+              secondary: themeProvider.secondaryColor,
+              brightness: themeProvider.isDarkMode ? Brightness.dark : Brightness.light,
+            ),
+            appBarTheme: AppBarTheme(
+              backgroundColor: themeProvider.primaryColor,
+              foregroundColor: themeProvider.menuColor,
+            ),
             iconTheme: IconThemeData(color: themeProvider.iconColor),
-            visualDensity: VisualDensity.adaptivePlatformDensity,
           ),
           home: const LoginScreen(),
         );

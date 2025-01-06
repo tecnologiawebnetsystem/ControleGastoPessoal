@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const ConfiguracoesScreen(),
   ];
 
-  void _onItemTapped(int index) {
+  void _onItemSelected(int index) {
     setState(() {
       _selectedIndex = index;
     });
@@ -41,17 +41,18 @@ class _HomeScreenState extends State<HomeScreen> {
     final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
+      backgroundColor: themeProvider.backgroundColor,
       body: Row(
         children: [
           NavigationRail(
             selectedIndex: _selectedIndex,
-            onDestinationSelected: _onItemTapped,
-            labelType: NavigationRailLabelType.all,
+            onDestinationSelected: _onItemSelected,
+            extended: MediaQuery.of(context).size.width > 1200,
             backgroundColor: themeProvider.primaryColor,
             selectedLabelTextStyle: TextStyle(color: themeProvider.menuColor),
-            unselectedLabelTextStyle: TextStyle(color: themeProvider.menuColor.withOpacity(0.5)),
+            unselectedLabelTextStyle: TextStyle(color: themeProvider.menuColor.withOpacity(0.7)),
             selectedIconTheme: IconThemeData(color: themeProvider.menuColor),
-            unselectedIconTheme: IconThemeData(color: themeProvider.menuColor.withOpacity(0.5)),
+            unselectedIconTheme: IconThemeData(color: themeProvider.menuColor),
             destinations: const [
               NavigationRailDestination(
                 icon: Icon(Icons.dashboard),
@@ -67,15 +68,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.calendar_today),
-                label: Text('Futuros'),
+                label: Text('Lançamentos Futuros'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.money_off),
-                label: Text('A Pagar'),
+                label: Text('Contas a Pagar'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.attach_money),
-                label: Text('A Receber'),
+                label: Text('Contas a Receber'),
               ),
               NavigationRailDestination(
                 icon: Icon(Icons.settings),
@@ -86,24 +87,32 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Column(
               children: [
+                AppBar(
+                  backgroundColor: themeProvider.cardColor,
+                  elevation: 0,
+                  title: Text(
+                    'Controle Gasto Pessoal',
+                    style: TextStyle(color: themeProvider.textColor),
+                  ),
+                  actions: [
+                    IconButton(
+                      icon: Icon(Icons.brightness_6, color: themeProvider.iconColor),
+                      onPressed: () {
+                        themeProvider.toggleTheme();
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.exit_to_app, color: themeProvider.iconColor),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => const LoginScreen()),
+                        );
+                      },
+                    ),
+                  ],
+                ),
                 Expanded(
                   child: _widgetOptions.elementAt(_selectedIndex),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const LoginScreen()),
-                      );
-                    },
-                    icon: Icon(Icons.exit_to_app),
-                    label: Text('Sair'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: themeProvider.primaryColor,
-                      foregroundColor: themeProvider.menuColor,
-                    ),
-                  ),
                 ),
               ],
             ),
