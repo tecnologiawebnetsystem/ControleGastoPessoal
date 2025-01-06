@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
 import '../providers/financial_provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'currency_exchange_widget.dart';
+import 'weather_widget.dart';
 
 class DashboardContent extends StatelessWidget {
   const DashboardContent({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class DashboardContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const CurrencyExchangeWidget(),
+          const SizedBox(height: 32),
           Text(
             'Visão Geral',
             style: TextStyle(
@@ -49,6 +53,8 @@ class DashboardContent extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           _buildRecentTransactions(context, financialProvider),
+          const SizedBox(height: 32),
+          const WeatherWidget(),
         ],
       ),
     );
@@ -57,8 +63,9 @@ class DashboardContent extends StatelessWidget {
   Widget _buildSummaryCards(BuildContext context, FinancialProvider financialProvider) {
     return GridView.count(
       crossAxisCount: 2,
-      crossAxisSpacing: 16,
-      mainAxisSpacing: 16,
+      crossAxisSpacing: 12,
+      mainAxisSpacing: 12,
+      childAspectRatio: 1.5,
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       children: [
@@ -73,30 +80,30 @@ class DashboardContent extends StatelessWidget {
   Widget _buildSummaryCard(BuildContext context, String title, double amount, IconData icon) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      elevation: 2,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       color: themeProvider.cardColor,
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, size: 32, color: themeProvider.primaryColor),
-            const SizedBox(height: 8),
+            Icon(icon, size: 24, color: themeProvider.primaryColor),
+            const SizedBox(height: 4),
             Text(
               title,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: themeProvider.textColor,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 2),
             Text(
               'R\$ ${amount.toStringAsFixed(2)}',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
                 color: themeProvider.primaryColor,
               ),

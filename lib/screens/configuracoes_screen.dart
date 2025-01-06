@@ -41,6 +41,7 @@ class ConfiguracoesScreen extends StatelessWidget {
   }
 
   Widget _buildSection(BuildContext context, String title, List<Widget> children) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -49,7 +50,7 @@ class ConfiguracoesScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Theme.of(context).primaryColor,
+            color: themeProvider.textColor,
           ),
         ),
         const SizedBox(height: 16),
@@ -60,22 +61,29 @@ class ConfiguracoesScreen extends StatelessWidget {
 
   Widget _buildThemeToggle(BuildContext context, ThemeProvider themeProvider) {
     return SwitchListTile(
-      title: const Text('Modo Escuro'),
+      title: Text(
+        'Modo Escuro',
+        style: TextStyle(color: themeProvider.textColor),
+      ),
       value: themeProvider.isDarkMode,
       onChanged: (value) {
         themeProvider.toggleTheme();
       },
       secondary: Icon(
         themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
-        color: Theme.of(context).primaryColor,
+        color: themeProvider.primaryColor,
       ),
     );
   }
 
   Widget _buildInfoTile(String title, String value) {
-    return ListTile(
-      title: Text(title),
-      trailing: Text(value),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return ListTile(
+          title: Text(title, style: TextStyle(color: themeProvider.textColor)),
+          trailing: Text(value, style: TextStyle(color: themeProvider.textSecondaryColor)),
+        );
+      },
     );
   }
 }

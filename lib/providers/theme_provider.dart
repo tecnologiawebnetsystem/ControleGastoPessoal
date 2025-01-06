@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeProvider extends ChangeNotifier {
+  Color _primaryColor = Colors.teal;
   bool _isDarkMode = false;
 
   bool get isDarkMode => _isDarkMode;
@@ -10,7 +11,7 @@ class ThemeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Color get primaryColor => _isDarkMode ? Colors.tealAccent[700]! : Colors.teal;
+  Color get primaryColor => _primaryColor;
   Color get textColor => _isDarkMode ? Colors.white : Colors.black87;
   Color get menuColor => Colors.white;
   Color get iconColor => _isDarkMode ? Colors.white : Colors.black87;
@@ -18,5 +19,10 @@ class ThemeProvider extends ChangeNotifier {
   Color get cardColor => _isDarkMode ? Color(0xFF1E1E1E) : Colors.white;
   Color get secondaryColor => _isDarkMode ? Colors.tealAccent[400]! : Colors.teal[300]!;
   Color get textSecondaryColor => _isDarkMode ? Colors.grey[300]! : Colors.grey[700]!;
+
+  void setThemeColor(Color color) {
+    _primaryColor = color;
+    notifyListeners();
+  }
 }
 

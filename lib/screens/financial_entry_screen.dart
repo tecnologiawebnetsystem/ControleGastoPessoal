@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import '../models/financial_entry.dart';
 import '../providers/financial_provider.dart';
 import '../providers/theme_provider.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'email_screen.dart';
 
 class FinancialEntryScreen extends StatefulWidget {
   final String title;
@@ -54,13 +56,26 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
                       '${entry.category} - ${entry.date.toString().split(' ')[0]}',
                       style: TextStyle(color: themeProvider.textSecondaryColor),
                     ),
-                    trailing: Text(
-                      'R\$ ${entry.amount.toStringAsFixed(2)}',
-                      style: TextStyle(
-                        color: entry.type == 'income' ? Colors.green : Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'R\$ ${entry.amount.toStringAsFixed(2)}',
+                          style: TextStyle(
+                            color: entry.type == 'income' ? Colors.green : Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.message, color: Colors.green),
+                          onPressed: () => _sendWhatsAppMessage(entry),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.email, color: Colors.blue),
+                          onPressed: () => _openEmailScreen(entry),
+                        ),
+                      ],
                     ),
                     onTap: () => _showEntryDialog(entry),
                   ),
@@ -236,6 +251,40 @@ class _FinancialEntryScreenState extends State<FinancialEntryScreen> {
           ],
         );
       },
+    );
+  }
+
+  Future<void> _sendWhatsAppMessage(FinancialEntry entry) async {
+    final phone = '5511999999999'; // Número de telefone padrão
+    final message = 'Olá! Gostaria de informar sobre o lançamento financeiro: '
+        '${entry.description} - R\$ ${entry.amount.toStringAsFixed(2)} '
+        '(${entry.category}) em ${entry.date.toString().split(' ')[0]}.\n\n'
+        'Enviado pelo Sistema Controle de Gasto Pessoal.';
+
+    final whatsappUrl = Uri.parse(
+      'https://wa.me/$phone/?text=${Uri.encodeComponent(message)}'
+    );
+
+    if (await canLaunchUrl(whatsappUrl)) {
+      await launchUrl(whatsappUrl);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Não foi possível abrir o WhatsApp')),
+      );
+    }
+  }
+
+  void _openEmailScreen(FinancialEntry entry) {
+    final message = 'Olá! Gostaria de informar sobre o lançamento financeiro: '
+        '${entry.description} - R\$ ${entry.amount.toStringAsFixed(2)} '
+        '(${entry.category}) em ${entry.date.toString().split(' ')[0]}.\n\n'
+        'Enviado pelo Sistema Controle de Gasto Pessoal.';
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EmailScreen(message: message),
+      ),
     );
   }
 }

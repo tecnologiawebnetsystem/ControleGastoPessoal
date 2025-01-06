@@ -1,3 +1,2 @@
-2025/01/04-22:54:12.907 cfdc Reusing MANIFEST C:\Users\klebe\AppData\Local\Temp\flutter_tools.9f404a7e\flutter_tools_chrome_device.187b136c\Default\shared_proto_db\metadata/MANIFEST-000001
-2025/01/04-22:54:12.908 cfdc Recovering log #3
-2025/01/04-22:54:12.908 cfdc Reusing old log C:\Users\klebe\AppData\Local\Temp\flutter_tools.9f404a7e\flutter_tools_chrome_device.187b136c\Default\shared_proto_db\metadata/000003.log 
+2025/01/05-23:42:42.394 901c Creating DB C:\Users\klebe\AppData\Local\Temp\flutter_tools.2ee14a5e\flutter_tools_chrome_device.c1026f9\Default\shared_proto_db\metadata since it was missing.
+2025/01/05-23:42:42.402 901c Reusing MANIFEST C:\Users\klebe\AppData\Local\Temp\flutter_tools.2ee14a5e\flutter_tools_chrome_device.c1026f9\Default\shared_proto_db\metadata/MANIFEST-000001
